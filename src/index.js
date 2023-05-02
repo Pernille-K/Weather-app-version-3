@@ -1,6 +1,6 @@
 function formatDate() {
-  const days = ["Sun", "Mon", "Tue", "Wed", "Thur", "Fri", "Sat"];
-  const now = new Date();
+  let days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  let now = new Date();
 
   let hours = now.getHours();
   if (hours < 10) {
@@ -11,30 +11,25 @@ function formatDate() {
     minutes = `0${minutes}`;
   }
 
-  const currentTime = document.querySelector(".currentTime");
+  let currentTime = document.querySelector(".currentTime");
   currentTime.innerHTML = `${hours}:${minutes}`;
 
-  const day = document.querySelector(".currentDay");
-  const currentDay = days[now.getDay()];
-  day.innerHTML = `${currentDay}`;
+  let dayElement = document.querySelector(".currentDay");
+  let currentDay = days[now.getDay()];
+  dayElement.innerHTML = `${currentDay}`;
 
-  const currentDate = document.querySelector(".currentDate");
+  let currentDate = document.querySelector(".currentDate");
   currentDate.innerHTML = `${now.getDate()}. ${now.getMonth() + 1}`;
 
-  const day2 = document.querySelector("#day2");
-  day2.innerHTML = days[(now.getDay() + 1) % 7];
+  for (let i = 2; i <= 6; i++) {
+    const day = document.querySelector(`#day${i}`);
 
-  const day3 = document.querySelector("#day3");
-  day3.innerHTML = days[(now.getDay() + 2) % 7];
+    if (!day) {
+      continue;
+    }
 
-  const day4 = document.querySelector("#day4");
-  day4.innerHTML = days[(now.getDay() + 3) % 7];
-
-  const day5 = document.querySelector("#day5");
-  day5.innerHTML = days[(now.getDay() + 4) % 7];
-
-  const day6 = document.querySelector("#day6");
-  day6.innerHTML = days[(now.getDay() + 5) % 7];
+    day.innerHTML = days[(now.getDay() + i - 1) % 7];
+  }
 }
 
 function changeToCelsius(event) {
