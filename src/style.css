@@ -1,0 +1,127 @@
+body {
+  font-family: "Ysabeau", sans-serif;
+  background-image: url("");
+}
+
+h1 {
+  text-transform: uppercase;
+  font-weight: 600;
+  font-size: 45px;
+}
+
+h2 {
+  font-size: 15px;
+  text-align: center;
+  font-weight: normal;
+  display: block;
+  margin: 0 auto;
+  font-style: capitalize;
+}
+
+h3 {
+  font-size: 15px;
+}
+
+button {
+  border: none;
+  background: none;
+}
+
+li {
+  list-style: none;
+}
+
+.container-mine {
+  padding-top: 20px;
+  padding-bottom: 20px;
+  display: block;
+  margin: 0 auto;
+  max-width: 620px;
+  margin-top: 10px;
+  border-radius: 10px;
+  border: 5px thin #e0f2fc;
+}
+
+#background-container {
+  background-color: #e0f2fc;
+}
+
+.search-button {
+  display: block;
+  margin: 0 auto;
+  font-size: 18px;
+}
+
+.current-button {
+  display: block;
+  margin: 0 auto;
+  font-size: 18px;
+}
+
+.degrees-buttons {
+  font-size: 18px;
+}
+
+.small-picture {
+  object-fit: content;
+  width: auto;
+  max-height: 50px;
+  display: block;
+  margin: 0 auto;
+}
+
+.clear-sky {
+  border-radius: 50%;
+  opacity: 75%;
+}
+
+.current-degrees {
+  text-align: center;
+  font-size: 25px;
+  display: block;
+  margin: 0 auto;
+}
+
+.weather-details-today {
+  font-size: 15px;
+}
+
+.col-mine {
+  text-align: center;
+  font-size: 18px;
+}
+
+.col-color {
+  color: #a9a9a9;
+}
+
+.days {
+  padding-top: 32px;
+}
+
+.title {
+  padding-top: 20px;
+}
+
+.title img {
+  display: block;
+  margin: 0 auto;
+  margin-top: -27px;
+  width: auto;
+  max-height: 90px;
+}
+
+.card-mine {
+  background: transparent;
+  border: 5px thin #e0f2fc;
+}
+
+.card-text {
+  padding-top: 10px;
+}
+
+.source-code-link {
+  font-size: 15px;
+  padding: 10px;
+  text-align: center;
+}
