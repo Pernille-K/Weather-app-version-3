@@ -1,6 +1,4 @@
 function formatDate() {
-  let days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-  let now = new Date();
   let hours = now.getHours();
   let minutes = now.getMinutes();
   let currentTime = document.querySelector(".currentTime");
@@ -16,20 +14,8 @@ function formatDate() {
   }
 
   currentTime.innerHTML = `${hours}:${minutes}`;
-
   dayElement.innerHTML = `${currentDay}`;
-
   currentDate.innerHTML = `${now.getDate()}. ${now.getMonth() + 1}`;
-
-  for (let i = 2; i <= 6; i++) {
-    const day = document.querySelector(`#day${i}`);
-
-    if (!day) {
-      continue;
-    }
-
-    day.innerHTML = days[(now.getDay() + i - 1) % 7];
-  }
 }
 
 function changeToCelsius(event) {
@@ -154,21 +140,26 @@ function search(city) {
   let apiUrlCity = `https://api.shecodes.io/weather/v1/current?query=${city}&key=${key}`;
   axios.get(apiUrlCity).then(displayWeather);
   axios.get(apiUrlCity).then(changeDesign);
+
+  getForecast(city);
 }
 
-function getAxiosCurrentLocation(response) {
+function getCurrentLocation(response) {
+  console.log(response);
   let key = "bb17928f0a6402b36bto3aa70a7e308c";
   let lon = response.coords.longitude;
   let lat = response.coords.latitude;
   let apiUrlCoordinates = `https://api.shecodes.io/weather/v1/current?lon=${lon}&lat=${lat}&key=${key}`;
-  let axiosReqCoordinates = axios.get(apiUrlCoordinates);
+  let apiUrlForecastCoordinates = `https://api.shecodes.io/weather/v1/forecast?lon=${lon}&lat=${lat}&key=${key}`;
 
-  axiosReqCoordinates.then(displayWeather);
-  axiosReqCoordinates.then(changeDesign);
+  axios.get(apiUrlCoordinates).then(displayWeather);
+  axios.get(apiUrlCoordinates).then(changeDesign);
+
+  axios.get(apiUrlForecastCoordinates).then(displayForecast);
 }
 
 function currentLocation() {
-  navigator.geolocation.getCurrentPosition(getAxiosCurrentLocation);
+  navigator.geolocation.getCurrentPosition(getCurrentLocation);
 }
 
 function handleSubmit(event) {
@@ -177,6 +168,56 @@ function handleSubmit(event) {
   search(input.value);
 }
 
+function displayForecast(response) {
+  console.log(response.data);
+  let forecastElement = document.querySelector("#forecast");
+  let forecastHTML = `<div class="row d-flex justify-content-center no-gutters days">
+`;
+
+  for (let i = 2; i <= 6; i++) {
+    let forecastDay = days[(now.getDay() + i - 1) % 7];
+
+    forecastHTML += `<div class="col col-mine">
+            <div class="card mx-auto card-mine">
+              <div class="card-body">
+                <h3 id="day">${forecastDay}</h3>
+                <img class="day-picture small-picture" src="" alt="" />
+                <p class="card-text">
+                  <span class="degrees-day">${Math.round(
+                    response.data.daily[i].temperature.maximum
+                  )}</span>&deg;<span
+                    class="temperature-sign"
+                  >
+                    </span
+                  >
+                  <em class="col-color"
+                    ><span class="degrees-night">${Math.round(
+                      response.data.daily[i].temperature.minimum
+                    )}</span>&deg;<span
+                      class="temperature-sign"
+                    >
+                      </span
+                    ></em
+                  >
+                </p>
+              </div>
+            </div>
+          </div>`;
+  }
+
+  forecastHTML = forecastHTML + `</div>`;
+  forecastElement.innerHTML = forecastHTML;
+}
+
+function getForecast(city) {
+  let key = "bb17928f0a6402b36bto3aa70a7e308c";
+  let apiUrlForecast = `https://api.shecodes.io/weather/v1/forecast?query=${city}&key=${key}
+`;
+  axios.get(apiUrlForecast).then(displayForecast);
+}
+
+let days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+let now = new Date();
 let celsiusTemperature = null;
 let celsiusButton = document.querySelector(".celsius-button");
 let fahrenheitButton = document.querySelector(".fahrenheit-button");
@@ -194,3 +235,5 @@ currentButton.addEventListener("click", currentLocation);
 search("Oslo");
 
 formatDate();
+
+getForecast("Oslo");
