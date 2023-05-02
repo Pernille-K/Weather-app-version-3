@@ -55,7 +55,6 @@ function changeToCelsius(event) {
   }
 
   temperatureSign.forEach((sign) => (sign.innerHTML = "C"));
-
 }
 
 function changeToFahrenheit(event) {
@@ -142,7 +141,7 @@ function displayWeather(response) {
   let currentWeatherDescription = response.data.condition.description;
   let humidityElement = document.querySelector("#humidity-stats");
   let windElement = document.querySelector("#wind-stats");
-  let humidity = response.data.temperature.humidity;  
+  let humidity = response.data.temperature.humidity;
   let wind = response.data.wind.speed;
 
   celsiusTemperature = Math.round(response.data.temperature.current);
