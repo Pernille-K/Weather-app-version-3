@@ -1,24 +1,24 @@
 function formatDate() {
   let days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   let now = new Date();
-
   let hours = now.getHours();
+  let minutes = now.getMinutes();
+  let currentTime = document.querySelector(".currentTime");
+  let dayElement = document.querySelector(".currentDay");
+  let currentDay = days[now.getDay()];
+  let currentDate = document.querySelector(".currentDate");
+
   if (hours < 10) {
     hours = `0${hours}`;
   }
-  let minutes = now.getMinutes();
   if (minutes < 10) {
     minutes = `0${minutes}`;
   }
 
-  let currentTime = document.querySelector(".currentTime");
   currentTime.innerHTML = `${hours}:${minutes}`;
 
-  let dayElement = document.querySelector(".currentDay");
-  let currentDay = days[now.getDay()];
   dayElement.innerHTML = `${currentDay}`;
 
-  let currentDate = document.querySelector(".currentDate");
   currentDate.innerHTML = `${now.getDate()}. ${now.getMonth() + 1}`;
 
   for (let i = 2; i <= 6; i++) {
@@ -178,7 +178,6 @@ function handleSubmit(event) {
 }
 
 let celsiusTemperature = null;
-
 let celsiusButton = document.querySelector(".celsius-button");
 let fahrenheitButton = document.querySelector(".fahrenheit-button");
 let form = document.querySelector(".search-bar");
