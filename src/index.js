@@ -140,6 +140,10 @@ function displayWeather(response) {
     "#current-weather-description"
   );
   let currentWeatherDescription = response.data.condition.description;
+  let humidityElement = document.querySelector("#humidity-stats");
+  let windElement = document.querySelector("#wind-stats");
+  let humidity = response.data.temperature.humidity;  
+  let wind = response.data.wind.speed;
 
   celsiusTemperature = Math.round(response.data.temperature.current);
 
@@ -147,6 +151,8 @@ function displayWeather(response) {
   city.innerHTML = `${response.data.city}`;
   currentDegrees.innerHTML = `${celsiusTemperature}&degC`;
   currentWeatherDescriptionElement.innerHTML = `${currentWeatherDescription}`;
+  humidityElement.innerHTML = `${humidity}%`;
+  windElement.innerHTML = `${wind}m/s`;
 }
 
 function search(city) {
