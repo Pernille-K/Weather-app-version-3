@@ -63,6 +63,20 @@ function changeDesign(response) {
   let backgroundContainer = document.querySelector("#background-container");
   let mainPicture = document.querySelector("#current-weather-picture");
   let weatherDescription = response.data.condition.description;
+
+  let sourceClearSkyPicture =
+    "https://s3.amazonaws.com/shecodesio-production/uploads/files/000/079/836/original/sun.png?1682944300";
+  let sourceCloudPicture =
+    "https://s3.amazonaws.com/shecodesio-production/uploads/files/000/079/848/original/cloudsadobe2.png?1682946292";
+  let sourceRainPicture =
+    "https://s3.amazonaws.com/shecodesio-production/uploads/files/000/079/764/original/rainy3.png?1682935050";
+  let sourceThunderPicture =
+    "https://s3.amazonaws.com/shecodesio-production/uploads/files/000/079/849/original/thunder.png?1682946763";
+  let sourceSnowPicture =
+    "https://s3.amazonaws.com/shecodesio-production/uploads/files/000/079/893/original/snow2.png?1682960045";
+  let sourceMistPicture =
+    "https://s3.amazonaws.com/shecodesio-production/uploads/files/000/079/866/original/cloudsadobegray.png?1682952198";
+
   let clouds = [
     "few clouds",
     "scattered clouds",
@@ -72,43 +86,26 @@ function changeDesign(response) {
 
   if (weatherDescription == "clear sky") {
     backgroundContainer.style.backgroundColor = "#fff8bc";
-    mainPicture.setAttribute(
-      "src",
-      `https://s3.amazonaws.com/shecodesio-production/uploads/files/000/079/836/original/sun.png?1682944300`
-    );
+    mainPicture.setAttribute("src", `${sourceClearSkyPicture}`);
   } else if (clouds.includes(weatherDescription)) {
     backgroundContainer.style.backgroundColor = "#ededed";
-    mainPicture.setAttribute(
-      "src",
-      `https://s3.amazonaws.com/shecodesio-production/uploads/files/000/079/848/original/cloudsadobe2.png?1682946292`
-    );
+    mainPicture.setAttribute("src", `${sourceCloudPicture}`);
   } else if (
     weatherDescription == "rain" ||
-    weatherDescription == "shower rain"
+    weatherDescription == "shower rain" ||
+    weatherDescription == "light rain"
   ) {
     backgroundContainer.style.backgroundColor = "#e0f2fc";
-    mainPicture.setAttribute(
-      "src",
-      `https://s3.amazonaws.com/shecodesio-production/uploads/files/000/079/764/original/rainy3.png?1682935050`
-    );
+    mainPicture.setAttribute("src", sourceRainPicture);
   } else if (weatherDescription == "thunderstorm") {
     backgroundContainer.style.backgroundColor = "#d1fdff";
-    mainPicture.setAttribute(
-      "src",
-      `https://s3.amazonaws.com/shecodesio-production/uploads/files/000/079/849/original/thunder.png?1682946763`
-    );
+    mainPicture.setAttribute("src", `${sourceThunderPicture}`);
   } else if (weatherDescription == "snow") {
     backgroundContainer.style.backgroundColor = "#fffafa";
-    mainPicture.setAttribute(
-      "src",
-      `https://s3.amazonaws.com/shecodesio-production/uploads/files/000/079/893/original/snow2.png?1682960045`
-    );
+    mainPicture.setAttribute("src", `${sourceSnowPicture}`);
   } else if (weatherDescription == "mist") {
     backgroundContainer.style.backgroundColor = "#B4C1C9";
-    mainPicture.setAttribute(
-      "src",
-      `https://s3.amazonaws.com/shecodesio-production/uploads/files/000/079/866/original/cloudsadobegray.png?1682952198`
-    );
+    mainPicture.setAttribute("src", `£${sourceMistPicture}`);
   }
 }
 
@@ -145,7 +142,6 @@ function search(city) {
 }
 
 function getCurrentLocation(response) {
-  console.log(response);
   let key = "bb17928f0a6402b36bto3aa70a7e308c";
   let lon = response.coords.longitude;
   let lat = response.coords.latitude;
@@ -169,7 +165,6 @@ function handleSubmit(event) {
 }
 
 function displayForecast(response) {
-  console.log(response.data);
   let forecastElement = document.querySelector("#forecast");
   let forecastHTML = `<div class="row d-flex justify-content-center no-gutters days">
 `;
@@ -233,7 +228,6 @@ form.addEventListener("submit", handleSubmit);
 currentButton.addEventListener("click", currentLocation);
 
 search("Oslo");
+getForecast("Oslo");
 
 formatDate();
-
-getForecast("Oslo");
