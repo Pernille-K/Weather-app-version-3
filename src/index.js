@@ -120,7 +120,7 @@ function displayWeather(response) {
   humidityElement.innerHTML = `${humidity}%`;
   windElement.innerHTML = `${wind}m/s`;
 
-  changeDesign(weatherDescription, null);
+  changeDesign(weatherDescription);
 }
 
 function search(city) {
@@ -161,6 +161,13 @@ function displayForecast(response) {
   for (let i = 2; i <= 6; i++) {
     let forecastDay = days[(now.getDay() + i - 1) % 7];
     let weatherDescription = response.data.daily[i].condition.description;
+    if (celsiusButton.onclick == true) {
+      tempSign = "C";
+    } else if (fahrenheitButton.onclick == true) {
+      tempSign = "F";
+    } else {
+      tempSign = "C";
+    }
 
     changeDesign(weatherDescription);
 
@@ -174,7 +181,7 @@ function displayForecast(response) {
                     response.data.daily[i].temperature.maximum
                   )}</span>&deg;<span
                     class="temperature-sign"
-                  >
+                  >${tempSign}
                     </span
                   >
                   <em class="col-color"
@@ -182,7 +189,7 @@ function displayForecast(response) {
                       response.data.daily[i].temperature.minimum
                     )}</span>&deg;<span
                       class="temperature-sign"
-                    >
+                    >${tempSign}
                       </span
                     ></em
                   >
