@@ -59,7 +59,7 @@ function changeToFahrenheit(event) {
   temperatureSign.forEach((sign) => (sign.innerHTML = "F"));
 }
 
-function changeDesign(currentWeatherDescription, forecastWeatherDescription) {
+function changeDesign(weatherDescription) {
   let backgroundContainer = document.querySelector("#background-container");
   let mainPicture = document.querySelector("#current-weather-picture");
 
@@ -76,96 +76,51 @@ function changeDesign(currentWeatherDescription, forecastWeatherDescription) {
   let sourceMistPicture =
     "https://s3.amazonaws.com/shecodesio-production/uploads/files/000/079/866/original/cloudsadobegray.png?1682952198";
 
-  if (currentWeatherDescription != null) {
-    if (
-      currentWeatherDescription == "sky is clear" ||
-      currentWeatherDescription == "clear sky"
-    ) {
-      backgroundContainer.style.backgroundColor = "#fff8bc";
-      mainPicture.setAttribute("src", sourceClearSkyPicture);
-    } else if (
-      currentWeatherDescription == "few clouds" ||
-      currentWeatherDescription == "scattered clouds" ||
-      currentWeatherDescription == "broken clouds" ||
-      currentWeatherDescription == "overcast clouds"
-    ) {
-      backgroundContainer.style.backgroundColor = "#ededed";
-      mainPicture.setAttribute("src", sourceCloudPicture);
-    } else if (
-      currentWeatherDescription == "rain" ||
-      currentWeatherDescription == "shower rain" ||
-      currentWeatherDescription == "light rain"
-    ) {
-      backgroundContainer.style.backgroundColor = "#e0f2fc";
-      mainPicture.setAttribute("src", sourceRainPicture);
-    } else if (currentWeatherDescription == "thunderstorm") {
-      backgroundContainer.style.backgroundColor = "#d1fdff";
-      mainPicture.setAttribute("src", sourceThunderPicture);
-    } else if (
-      currentWeatherDescription == "snow" ||
-      currentWeatherDescription == "light shower snow" ||
-      currentWeatherDescription == "light snow"
-    ) {
-      backgroundContainer.style.backgroundColor = "#fffafa";
-      mainPicture.setAttribute("src", sourceSnowPicture);
-    } else if (currentWeatherDescription == "mist") {
-      backgroundContainer.style.backgroundColor = "#B4C1C9";
-      mainPicture.setAttribute("src", sourceMistPicture);
-    }
+  if (weatherDescription.includes("clear")) {
+    backgroundContainer.style.backgroundColor = "#fff8bc";
+    weatherPicture = sourceClearSkyPicture;
+  } else if (weatherDescription.includes("clouds")) {
+    backgroundContainer.style.backgroundColor = "#ededed";
+    weatherPicture = sourceCloudPicture;
+  } else if (weatherDescription.includes("rain")) {
+    backgroundContainer.style.backgroundColor = "#e0f2fc";
+    weatherPicture = sourceRainPicture;
+  } else if (weatherDescription.includes("thunderstorm")) {
+    backgroundContainer.style.backgroundColor = "#d1fdff";
+    weatherPicture = sourceThunderPicture;
+  } else if (weatherDescription.includes("snow")) {
+    backgroundContainer.style.backgroundColor = "#fffafa";
+    weatherPicture = sourceSnowPicture;
+  } else if (weatherDescription.includes("mist")) {
+    backgroundContainer.style.backgroundColor = "#B4C1C9";
+    weatherPicture = sourceMistPicture;
   }
-  if (forecastWeatherDescription != null) {
-    if (forecastWeatherDescription == "sky is clear") {
-      weatherPicture = sourceClearSkyPicture;
-    } else if (
-      forecastWeatherDescription == "few clouds" ||
-      forecastWeatherDescription == "scattered clouds" ||
-      forecastWeatherDescription == "broken clouds" ||
-      forecastWeatherDescription == "overcast clouds"
-    ) {
-      weatherPicture = sourceCloudPicture;
-    } else if (
-      forecastWeatherDescription == "rain" ||
-      forecastWeatherDescription == "shower rain" ||
-      forecastWeatherDescription == "light rain"
-    ) {
-      weatherPicture = sourceRainPicture;
-    } else if (forecastWeatherDescription == "thunderstorm") {
-      weatherPicture = sourceThunderPicture;
-    } else if (
-      forecastWeatherDescription == "snow" ||
-      forecastWeatherDescription == "light shower snow" ||
-      forecastWeatherDescription == "light snow"
-    ) {
-      weatherPicture = sourceSnowPicture;
-    } else if (forecastWeatherDescription == "mist") {
-      weatherPicture = sourceMistPicture;
-    }
-  }
+  mainPicture.setAttribute("src", weatherPicture);
 }
 
 function displayWeather(response) {
   let h1 = document.querySelector("h1");
   let city = document.querySelector(".city");
   let currentDegrees = document.querySelector(".current-degrees");
-  let currentWeatherDescriptionElement = document.querySelector(
+  let weatherDescriptionElement = document.querySelector(
     "#current-weather-description"
   );
-  let currentWeatherDescription = response.data.condition.description;
+  let weatherDescription = response.data.condition.description;
   let humidityElement = document.querySelector("#humidity-stats");
   let windElement = document.querySelector("#wind-stats");
   let humidity = response.data.temperature.humidity;
-  let wind = response.data.wind.speed;
+  let wind = Math.round(response.data.wind.speed);
 
   celsiusTemperature = Math.round(response.data.temperature.current);
 
   h1.innerHTML = `${response.data.city}`;
   city.innerHTML = `${response.data.city}`;
   currentDegrees.innerHTML = `${celsiusTemperature}&degC`;
-  currentWeatherDescriptionElement.innerHTML = `${currentWeatherDescription}`;
+  weatherDescriptionElement.innerHTML = `${weatherDescription}`;
   humidityElement.innerHTML = `${humidity}%`;
   windElement.innerHTML = `${wind}m/s`;
 
-  changeDesign(currentWeatherDescription, null);
+  changeDesign(weatherDescription, null);
 }
 
 function search(city) {
@@ -205,12 +160,9 @@ function displayForecast(response) {
 
   for (let i = 2; i <= 6; i++) {
     let forecastDay = days[(now.getDay() + i - 1) % 7];
-    let forecastWeatherDescription =
-      response.data.daily[i].condition.description;
+    let weatherDescription = response.data.daily[i].condition.description;
 
-    changeDesign(null, forecastWeatherDescription);
-    console.log(weatherPicture);
-    console.log(forecastWeatherDescription);
+    changeDesign(weatherDescription);
 
     forecastHTML += `<div class="col col-mine">
             <div class="card mx-auto card-mine">
