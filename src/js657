@@ -77,10 +77,7 @@ function changeDesign(currentWeatherDescription, forecastWeatherDescription) {
     "https://s3.amazonaws.com/shecodesio-production/uploads/files/000/079/866/original/cloudsadobegray.png?1682952198";
 
   if (currentWeatherDescription != null) {
-    if (
-      currentWeatherDescription == "sky is clear" ||
-      currentWeatherDescription == "clear sky"
-    ) {
+    if (currentWeatherDescription == "clear sky") {
       backgroundContainer.style.backgroundColor = "#fff8bc";
       mainPicture.setAttribute("src", sourceClearSkyPicture);
     } else if (
@@ -114,31 +111,37 @@ function changeDesign(currentWeatherDescription, forecastWeatherDescription) {
     }
   }
   if (forecastWeatherDescription != null) {
-    if (forecastWeatherDescription == "sky is clear") {
-      weatherPicture = sourceClearSkyPicture;
+    if (forecastWeatherDescription == "clear sky") {
+      backgroundContainer.style.backgroundColor = "#fff8bc";
+      mainPicture.setAttribute("src", sourceClearSkyPicture);
     } else if (
       forecastWeatherDescription == "few clouds" ||
       forecastWeatherDescription == "scattered clouds" ||
       forecastWeatherDescription == "broken clouds" ||
       forecastWeatherDescription == "overcast clouds"
     ) {
-      weatherPicture = sourceCloudPicture;
+      backgroundContainer.style.backgroundColor = "#ededed";
+      mainPicture.setAttribute("src", sourceCloudPicture);
     } else if (
       forecastWeatherDescription == "rain" ||
       forecastWeatherDescription == "shower rain" ||
       forecastWeatherDescription == "light rain"
     ) {
-      weatherPicture = sourceRainPicture;
+      backgroundContainer.style.backgroundColor = "#e0f2fc";
+      mainPicture.setAttribute("src", sourceRainPicture);
     } else if (forecastWeatherDescription == "thunderstorm") {
-      weatherPicture = sourceThunderPicture;
+      backgroundContainer.style.backgroundColor = "#d1fdff";
+      mainPicture.setAttribute("src", sourceThunderPicture);
     } else if (
       forecastWeatherDescription == "snow" ||
       forecastWeatherDescription == "light shower snow" ||
       forecastWeatherDescription == "light snow"
     ) {
-      weatherPicture = sourceSnowPicture;
+      backgroundContainer.style.backgroundColor = "#fffafa";
+      mainPicture.setAttribute("src", sourceSnowPicture);
     } else if (forecastWeatherDescription == "mist") {
-      weatherPicture = sourceMistPicture;
+      backgroundContainer.style.backgroundColor = "#B4C1C9";
+      mainPicture.setAttribute("src", sourceMistPicture);
     }
   }
 }
@@ -208,9 +211,7 @@ function displayForecast(response) {
     let forecastWeatherDescription =
       response.data.daily[i].condition.description;
 
-    changeDesign(null, forecastWeatherDescription);
-    console.log(weatherPicture);
-    console.log(forecastWeatherDescription);
+    let weatherPicture = changeDesign(null, forecastWeatherDescription);
 
     forecastHTML += `<div class="col col-mine">
             <div class="card mx-auto card-mine">
