@@ -18,18 +18,18 @@ function formatDate() {
   currentDate.innerHTML = `${now.getDate()}. ${now.getMonth() + 1}`;
 }
 
-function changeToCelsius(event) {
-  event.preventDefault();
+function changeToCelsius() {
   let temperatureElement = document.querySelector(".current-degrees");
+  celsiusButton.classList.add("active");
   fahrenheitButton.classList.remove("active");
 
   temperatureElement.innerHTML = `${celsiusTemperature}&deg;C`;
 }
 
-function changeToFahrenheit(event) {
-  event.preventDefault();
+function changeToFahrenheit() {
   let currentDegreesFahrenheit = Math.round((celsiusTemperature * 9) / 5 + 32);
   let temperatureElement = document.querySelector(".current-degrees");
+
   fahrenheitButton.classList.add("active");
   celsiusButton.classList.remove("active");
 
@@ -147,8 +147,7 @@ function displayForecast(response) {
     let weatherDescription = response.data.daily[i - 1].condition.description;
     let degreesDay = response.data.daily[i - 1].temperature.maximum;
     let degreesNight = response.data.daily[i - 1].temperature.minimum;
-    const isFahrenheit = fahrenheitButton.classList.contains("active");
-    console.log(isFahrenheit);
+    let isFahrenheit = fahrenheitButton.classList.contains("active");
 
     changeDesign(weatherDescription);
 
@@ -202,14 +201,10 @@ let fahrenheitButton = document.querySelector(".fahrenheit-button");
 let form = document.querySelector(".search-bar");
 let currentButton = document.querySelector(".current-button");
 
+celsiusButton.classList.add("active");
 celsiusButton.addEventListener("click", changeToCelsius);
-
 fahrenheitButton.addEventListener("click", changeToFahrenheit);
-
 form.addEventListener("submit", handleSubmit);
-
 currentButton.addEventListener("click", currentLocation);
-
 search("Oslo");
-
 formatDate();
