@@ -39,7 +39,7 @@ li {
   max-width: 620px;
   margin-top: 10px;
   border-radius: 10px;
-  border: 5px thin #e0f2fc;
+  border: 1px solid #d1d1d1;
 }
 
 #background-container {
@@ -118,7 +118,7 @@ li {
 
 .card-mine {
   background: transparent;
-  border: 5px thin #e0f2fc;
+  border: 1px solid #d1d1d1;
 }
 
 .card-text {
