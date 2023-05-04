@@ -21,42 +21,19 @@ function formatDate() {
 function changeToCelsius(event) {
   event.preventDefault();
   let temperatureElement = document.querySelector(".current-degrees");
-  let degreesDay = document.querySelectorAll(".degrees-day");
-  let degreesNight = document.querySelectorAll(".degrees-night");
-  let temperatureSign = document.querySelectorAll(".temperature-sign");
+  fahrenheitButton.classList.remove("active");
 
   temperatureElement.innerHTML = `${celsiusTemperature}&deg;C`;
-
-  for (let i = 0; i < degreesDay.length; i++) {
-    degreesDay[i].innerHTML = "7";
-  }
-
-  for (let i = 0; i < degreesNight.length; i++) {
-    degreesNight[i].innerHTML = "1";
-  }
-
-  temperatureSign.forEach((sign) => (sign.innerHTML = "C"));
 }
 
 function changeToFahrenheit(event) {
   event.preventDefault();
   let currentDegreesFahrenheit = Math.round((celsiusTemperature * 9) / 5 + 32);
   let temperatureElement = document.querySelector(".current-degrees");
-  let degreesDay = document.querySelectorAll(".degrees-day");
-  let degreesNight = document.querySelectorAll(".degrees-night");
-  let temperatureSign = document.querySelectorAll(".temperature-sign");
+  fahrenheitButton.classList.add("active");
+  celsiusButton.classList.remove("active");
 
   temperatureElement.innerHTML = `${currentDegreesFahrenheit}&deg;F`;
-
-  for (let i = 0; i < degreesDay.length; i++) {
-    degreesDay[i].innerHTML = "45";
-  }
-
-  for (let i = 0; i < degreesNight.length; i++) {
-    degreesNight[i].innerHTML = "34";
-  }
-
-  temperatureSign.forEach((sign) => (sign.innerHTML = "F"));
 }
 
 function changeDesign(weatherDescription) {
@@ -153,21 +130,25 @@ function handleSubmit(event) {
   search(input.value);
 }
 
+function formatTemperature(temperature, isFahrenheit) {
+  if (isFahrenheit) {
+    return Math.round(temperature * 1.8 + 32) + "&deg;F";
+  } else {
+    return Math.round(temperature) + "&deg;C";
+  }
+}
+
 function displayForecast(response) {
   let forecastElement = document.getElementById("forecast");
-  let forecastHTML = `<div class="row d-flex justify-content-center no-gutters days">
-`;
+  let forecastHTML = `<div class="row d-flex justify-content-center no-gutters days">`;
 
   for (let i = 2; i <= 6; i++) {
     let forecastDay = days[(now.getDay() + i - 1) % 7];
-    let weatherDescription = response.data.daily[i].condition.description;
-    if (celsiusButton.onclick == true) {
-      tempSign = "C";
-    } else if (fahrenheitButton.onclick == true) {
-      tempSign = "F";
-    } else {
-      tempSign = "C";
-    }
+    let weatherDescription = response.data.daily[i - 1].condition.description;
+    let degreesDay = response.data.daily[i - 1].temperature.maximum;
+    let degreesNight = response.data.daily[i - 1].temperature.minimum;
+    const isFahrenheit = fahrenheitButton.classList.contains("active");
+    console.log(isFahrenheit);
 
     changeDesign(weatherDescription);
 
@@ -177,19 +158,21 @@ function displayForecast(response) {
                 <h3 id="day">${forecastDay}</h3>
                 <img class="day-picture small-picture" src="${weatherPicture}" alt="" />
                 <p class="card-text">
-                  <span class="degrees-day">${Math.round(
-                    response.data.daily[i].temperature.maximum
-                  )}</span>&deg;<span
+                  <span class="degrees-day">${formatTemperature(
+                    degreesDay,
+                    isFahrenheit
+                  )}</span><span
                     class="temperature-sign"
-                  >${tempSign}
+                  >
                     </span
                   >
                   <em class="col-color"
-                    ><span class="degrees-night">${Math.round(
-                      response.data.daily[i].temperature.minimum
-                    )}</span>&deg;<span
+                    ><span class="degrees-night">${formatTemperature(
+                      degreesNight,
+                      isFahrenheit
+                    )}</span><span
                       class="temperature-sign"
-                    >${tempSign}
+                    >
                       </span
                     ></em
                   >
@@ -213,6 +196,7 @@ function getForecast(city) {
 let days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 let now = new Date();
 let celsiusTemperature = null;
+let tempSign = "C";
 let celsiusButton = document.querySelector(".celsius-button");
 let fahrenheitButton = document.querySelector(".fahrenheit-button");
 let form = document.querySelector(".search-bar");

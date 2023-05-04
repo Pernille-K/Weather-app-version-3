@@ -62,6 +62,10 @@ li {
   font-size: 18px;
 }
 
+.active {
+  font-weight: 600;
+}
+
 .small-picture {
   object-fit: content;
   width: auto;
