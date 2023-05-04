@@ -165,7 +165,7 @@ function displayForecast(response) {
                     class="temperature-sign"
                   >
                     </span
-                  >
+                  ><br/>
                   <em class="col-color"
                     ><span class="degrees-night">${formatTemperature(
                       degreesNight,
