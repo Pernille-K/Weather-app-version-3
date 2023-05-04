@@ -26,6 +26,17 @@ function changeToCelsius() {
   temperatureElement.innerHTML = `${celsiusTemperature}&deg;C`;
 }
 
+// function fOnClick() {
+//   let input = document.querySelector("#search-input");
+//   searchValue = "";
+
+//   if (input != "") {
+//     searchValue = input.value;
+//   }
+
+//   search(searchValue);
+// }
+
 function changeToFahrenheit() {
   let currentDegreesFahrenheit = Math.round((celsiusTemperature * 9) / 5 + 32);
   let temperatureElement = document.querySelector(".current-degrees");
@@ -142,11 +153,11 @@ function displayForecast(response) {
   let forecastElement = document.getElementById("forecast");
   let forecastHTML = `<div class="row d-flex justify-content-center no-gutters days">`;
 
-  for (let i = 2; i <= 6; i++) {
-    let forecastDay = days[(now.getDay() + i - 1) % 7];
-    let weatherDescription = response.data.daily[i - 1].condition.description;
-    let degreesDay = response.data.daily[i - 1].temperature.maximum;
-    let degreesNight = response.data.daily[i - 1].temperature.minimum;
+  for (let i = 1; i <= 5; i++) {
+    let forecastDay = days[(now.getDay() + i) % 7];
+    let weatherDescription = response.data.daily[i].condition.description;
+    let degreesDay = response.data.daily[i].temperature.maximum;
+    let degreesNight = response.data.daily[i].temperature.minimum;
     let isFahrenheit = fahrenheitButton.classList.contains("active");
 
     changeDesign(weatherDescription);
@@ -204,6 +215,8 @@ let currentButton = document.querySelector(".current-button");
 celsiusButton.classList.add("active");
 celsiusButton.addEventListener("click", changeToCelsius);
 fahrenheitButton.addEventListener("click", changeToFahrenheit);
+// fahrenheitButton.addEventListener("click", fOnClick);
+
 form.addEventListener("submit", handleSubmit);
 currentButton.addEventListener("click", currentLocation);
 search("Oslo");
