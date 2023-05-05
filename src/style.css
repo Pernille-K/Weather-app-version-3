@@ -79,11 +79,12 @@ li {
   opacity: 75%;
 }
 
-.current-degrees {
-  text-align: center;
-  font-size: 25px;
+.current-degrees-and-sign {
   display: block;
   margin: 0 auto;
+  text-align: center;
+  font-size: 25px;
+  font-weight: 600;
 }
 
 .weather-details-today {
