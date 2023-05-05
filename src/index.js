@@ -39,6 +39,7 @@ function changeToFahrenheit() {
 function changeDesign(weatherDescription) {
   let backgroundContainer = document.querySelector("#background-container");
   let mainPicture = document.querySelector("#current-weather-picture");
+  weatherPicture = null;
 
   let sourceClearSkyPicture =
     "https://s3.amazonaws.com/shecodesio-production/uploads/files/000/079/836/original/sun.png?1682944300";
@@ -94,7 +95,6 @@ function displayWeather(response) {
   h1.innerHTML = `${response.data.city}`;
   city.innerHTML = `${response.data.city}`;
   currentDegrees.innerHTML = `${Math.round(response.data.temperature.current)}`;
-  console.log(response.data.temperature.current);
   weatherDescriptionElement.innerHTML = `${weatherDescription}`;
   humidityElement.innerHTML = `${humidity}%`;
   windElement.innerHTML = `${wind}m/s`;
@@ -204,5 +204,5 @@ fahrenheitButton.addEventListener("click", changeToFahrenheit);
 
 form.addEventListener("submit", handleSubmit);
 currentButton.addEventListener("click", currentLocation);
-search("Oslo", units);
+search("Sydney");
 formatDate();
