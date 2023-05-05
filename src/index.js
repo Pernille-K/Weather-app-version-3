@@ -24,7 +24,7 @@ function changeToCelsius() {
   tempSign = "C";
   units = "metric";
 
-  search(cityName, units);
+  search(cityName);
 }
 
 function changeToFahrenheit() {
@@ -33,7 +33,7 @@ function changeToFahrenheit() {
   tempSign = "F";
   units = "imperial";
 
-  search(cityName, units);
+  search(cityName);
 }
 
 function changeDesign(weatherDescription) {
@@ -94,6 +94,7 @@ function displayWeather(response) {
   h1.innerHTML = `${response.data.city}`;
   city.innerHTML = `${response.data.city}`;
   currentDegrees.innerHTML = `${Math.round(response.data.temperature.current)}`;
+  console.log(response.data.temperature.current);
   weatherDescriptionElement.innerHTML = `${weatherDescription}`;
   humidityElement.innerHTML = `${humidity}%`;
   windElement.innerHTML = `${wind}m/s`;
@@ -102,7 +103,7 @@ function displayWeather(response) {
   changeDesign(weatherDescription);
 }
 
-function search(city, units) {
+function search(city) {
   let key = "bb17928f0a6402b36bto3aa70a7e308c";
   let apiUrlCity = `https://api.shecodes.io/weather/v1/current?query=${city}&key=${key}&units=${units}`;
   axios.get(apiUrlCity).then(displayWeather);
