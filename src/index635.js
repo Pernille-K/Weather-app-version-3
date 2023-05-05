@@ -19,21 +19,21 @@ function formatDate() {
 }
 
 function changeToCelsius() {
+  let temperatureElement = document.querySelector(".current-degrees");
   celsiusButton.classList.add("active");
   fahrenheitButton.classList.remove("active");
-  tempSign = "C";
-  units = "metric";
 
-  search(cityName, units);
+  temperatureElement.innerHTML = `${celsiusTemperature}&deg;C`;
 }
 
 function changeToFahrenheit() {
+  let currentDegreesFahrenheit = Math.round((celsiusTemperature * 9) / 5 + 32);
+  let temperatureElement = document.querySelector(".current-degrees");
+
   fahrenheitButton.classList.add("active");
   celsiusButton.classList.remove("active");
-  tempSign = "F";
-  units = "imperial";
 
-  search(cityName, units);
+  temperatureElement.innerHTML = `${currentDegreesFahrenheit}&deg;F`;
 }
 
 function changeDesign(weatherDescription) {
@@ -87,24 +87,22 @@ function displayWeather(response) {
   let windElement = document.querySelector("#wind-stats");
   let humidity = response.data.temperature.humidity;
   let wind = Math.round(response.data.wind.speed);
-  let tempSignElement = document.querySelector(".temperature-sign");
 
-  cityName = response.data.city;
+  celsiusTemperature = Math.round(response.data.temperature.current);
 
   h1.innerHTML = `${response.data.city}`;
   city.innerHTML = `${response.data.city}`;
-  currentDegrees.innerHTML = `${Math.round(response.data.temperature.current)}`;
+  currentDegrees.innerHTML = `${celsiusTemperature}&degC`;
   weatherDescriptionElement.innerHTML = `${weatherDescription}`;
   humidityElement.innerHTML = `${humidity}%`;
   windElement.innerHTML = `${wind}m/s`;
-  tempSignElement.innerHTML = `°${tempSign}`;
 
   changeDesign(weatherDescription);
 }
 
-function search(city, units) {
+function search(city) {
   let key = "bb17928f0a6402b36bto3aa70a7e308c";
-  let apiUrlCity = `https://api.shecodes.io/weather/v1/current?query=${city}&key=${key}&units=${units}`;
+  let apiUrlCity = `https://api.shecodes.io/weather/v1/current?query=${city}&key=${key}`;
   axios.get(apiUrlCity).then(displayWeather);
 
   getForecast(city);
@@ -114,8 +112,8 @@ function getCurrentLocation(response) {
   let key = "bb17928f0a6402b36bto3aa70a7e308c";
   let lon = response.coords.longitude;
   let lat = response.coords.latitude;
-  let apiUrlCoordinates = `https://api.shecodes.io/weather/v1/current?lon=${lon}&lat=${lat}&key=${key}&units=${units}`;
-  let apiUrlForecastCoordinates = `https://api.shecodes.io/weather/v1/forecast?lon=${lon}&lat=${lat}&key=${key}&units=${units}`;
+  let apiUrlCoordinates = `https://api.shecodes.io/weather/v1/current?lon=${lon}&lat=${lat}&key=${key}`;
+  let apiUrlForecastCoordinates = `https://api.shecodes.io/weather/v1/forecast?lon=${lon}&lat=${lat}&key=${key}`;
 
   axios.get(apiUrlCoordinates).then(displayWeather);
 
@@ -132,11 +130,11 @@ function handleSubmit(event) {
   search(input.value);
 }
 
-function formatSign(isFahrenheit) {
+function formatTemperature(temperature, isFahrenheit) {
   if (isFahrenheit) {
-    return "°F";
+    return Math.round(temperature * 1.8 + 32) + "&deg;F";
   } else {
-    return "°C";
+    return Math.round(temperature) + "&deg;C";
   }
 }
 
@@ -147,8 +145,8 @@ function displayForecast(response) {
   for (let i = 1; i <= 5; i++) {
     let forecastDay = days[(now.getDay() + i) % 7];
     let weatherDescription = response.data.daily[i].condition.description;
-    let degreesDay = Math.round(response.data.daily[i].temperature.maximum);
-    let degreesNight = Math.round(response.data.daily[i].temperature.minimum);
+    let degreesDay = response.data.daily[i].temperature.maximum;
+    let degreesNight = response.data.daily[i].temperature.minimum;
     let isFahrenheit = fahrenheitButton.classList.contains("active");
 
     changeDesign(weatherDescription);
@@ -159,15 +157,21 @@ function displayForecast(response) {
                 <h3 id="day">${forecastDay}</h3>
                 <img class="day-picture small-picture" src="${weatherPicture}" alt="" />
                 <p class="card-text">
-                  <span class="degrees-day">${degreesDay}</span><span
+                  <span class="degrees-day">${formatTemperature(
+                    degreesDay,
+                    isFahrenheit
+                  )}</span><span
                     class="temperature-sign"
-                  >${formatSign(isFahrenheit)}
+                  >
                     </span
                   ><br/>
                   <em class="col-color"
-                    ><span class="degrees-night">${degreesNight}</span><span
+                    ><span class="degrees-night">${formatTemperature(
+                      degreesNight,
+                      isFahrenheit
+                    )}</span><span
                       class="temperature-sign"
-                    >${formatSign(isFahrenheit)}
+                    >
                       </span
                     ></em
                   >
@@ -183,14 +187,14 @@ function displayForecast(response) {
 
 function getForecast(city) {
   let key = "bb17928f0a6402b36bto3aa70a7e308c";
-  let apiUrlForecast = `https://api.shecodes.io/weather/v1/forecast?query=${city}&key=${key}&units=${units}`;
+  let apiUrlForecast = `https://api.shecodes.io/weather/v1/forecast?query=${city}&key=${key}
+`;
   axios.get(apiUrlForecast).then(displayForecast);
 }
 
 let days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 let now = new Date();
-let cityName = null;
-let units = "metric";
+let celsiusTemperature = null;
 let tempSign = "C";
 let celsiusButton = document.querySelector(".celsius-button");
 let fahrenheitButton = document.querySelector(".fahrenheit-button");
@@ -203,5 +207,5 @@ fahrenheitButton.addEventListener("click", changeToFahrenheit);
 
 form.addEventListener("submit", handleSubmit);
 currentButton.addEventListener("click", currentLocation);
-search("Oslo", units);
+search("Oslo");
 formatDate();
