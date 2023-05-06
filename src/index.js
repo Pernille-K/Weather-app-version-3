@@ -36,10 +36,10 @@ function changeToFahrenheit() {
   search(cityName);
 }
 
-function changeDesign(weatherDescription) {
+function changeDesign(currentWeatherDescription, forecastWeatherDescription) {
   let backgroundContainer = document.querySelector("#background-container");
   let mainPicture = document.querySelector("#current-weather-picture");
-  weatherPicture = null;
+  weatherPicture = "#";
 
   let sourceClearSkyPicture =
     "https://s3.amazonaws.com/shecodesio-production/uploads/files/000/079/836/original/sun.png?1682944300";
@@ -61,59 +61,94 @@ function changeDesign(weatherDescription) {
     "broken clouds",
     "few clouds",
   ];
-  let rain = ["shower rain", "rain", "light rain"];
+  let rain = ["shower rain", "rain", "light rain", "moderate rain"];
+
   let thunderstorm = ["thunderstorm"];
   let snow = ["snow"];
   let mist = ["mist", "fog"];
 
-  switch (weatherDescription.toLowerCase()) {
-    case clear[0]:
-    case clear[1]:
-      backgroundContainer.style.backgroundColor = "#fff8bc";
-      weatherPicture = sourceClearSkyPicture;
-      break;
-    case clouds[0]:
-    case clouds[1]:
-    case clouds[2]:
-    case clouds[3]:
-      backgroundContainer.style.backgroundColor = "#ededed";
-      weatherPicture = sourceCloudPicture;
-      break;
-    case rain[0]:
-    case rain[1]:
-    case rain[2]:
-      backgroundContainer.style.backgroundColor = "#e0f2fc";
-      weatherPicture = sourceRainPicture;
-      break;
-    case [thunderstorm]:
-      backgroundContainer.style.backgroundColor = "#d1fdff";
-      weatherPicture = sourceThunderPicture;
-      break;
-    case snow[0]:
-      backgroundContainer.style.backgroundColor = "#fffafa";
-      weatherPicture = sourceSnowPicture;
-      break;
-    case mist[0]:
-    case mist[1]:
-      backgroundContainer.style.backgroundColor = "#B4C1C9";
-      weatherPicture = sourceMistPicture;
-      break;
-    default:
-      break;
+  if (currentWeatherDescription != null) {
+    switch (currentWeatherDescription.toLowerCase()) {
+      case clear[0]:
+      case clear[1]:
+        backgroundContainer.style.backgroundColor = "#fff8bc";
+        weatherPicture = sourceClearSkyPicture;
+        break;
+      case clouds[0]:
+      case clouds[1]:
+      case clouds[2]:
+      case clouds[3]:
+        backgroundContainer.style.backgroundColor = "#ededed";
+        weatherPicture = sourceCloudPicture;
+        break;
+      case rain[0]:
+      case rain[1]:
+      case rain[2]:
+      case rain[3]:
+        backgroundContainer.style.backgroundColor = "#e0f2fc";
+        weatherPicture = sourceRainPicture;
+        break;
+      case [thunderstorm]:
+        backgroundContainer.style.backgroundColor = "#d1fdff";
+        weatherPicture = sourceThunderPicture;
+        break;
+      case snow[0]:
+        backgroundContainer.style.backgroundColor = "#fffafa";
+        weatherPicture = sourceSnowPicture;
+        break;
+      case mist[0]:
+      case mist[1]:
+        backgroundContainer.style.backgroundColor = "#B4C1C9";
+        weatherPicture = sourceMistPicture;
+        break;
+      default:
+        break;
+    }
+    mainPicture.setAttribute("src", weatherPicture);
   }
-  mainPicture.setAttribute("src", weatherPicture);
+
+  if (forecastWeatherDescription != null) {
+    switch (forecastWeatherDescription.toLowerCase()) {
+      case clear[0]:
+      case clear[1]:
+        weatherPicture = sourceClearSkyPicture;
+        break;
+      case clouds[0]:
+      case clouds[1]:
+      case clouds[2]:
+      case clouds[3]:
+        weatherPicture = sourceCloudPicture;
+        break;
+      case rain[0]:
+      case rain[1]:
+      case rain[2]:
+      case rain[3]:
+        weatherPicture = sourceRainPicture;
+        break;
+      case [thunderstorm]:
+        weatherPicture = sourceThunderPicture;
+        break;
+      case snow[0]:
+        weatherPicture = sourceSnowPicture;
+        break;
+      case mist[0]:
+      case mist[1]:
+        weatherPicture = sourceMistPicture;
+        break;
+      default:
+        break;
+    }
+  }
 }
 
 function displayWeather(response) {
-  console.log(response.data);
   let h1 = document.querySelector("h1");
   let city = document.querySelector(".city");
   let currentDegrees = document.querySelector(".current-degrees");
   let weatherDescriptionElement = document.querySelector(
     "#current-weather-description"
   );
-  let weatherDescription = response.data.condition.description;
-  console.log(weatherDescription);
+  let currentWeatherDescription = response.data.condition.description;
   let humidityElement = document.querySelector("#humidity-stats");
   let windElement = document.querySelector("#wind-stats");
   let humidity = response.data.temperature.humidity;
@@ -125,12 +160,12 @@ function displayWeather(response) {
   h1.innerHTML = `${response.data.city}`;
   city.innerHTML = `${response.data.city}`;
   currentDegrees.innerHTML = `${Math.round(response.data.temperature.current)}`;
-  weatherDescriptionElement.innerHTML = `${weatherDescription}`;
+  weatherDescriptionElement.innerHTML = `${currentWeatherDescription}`;
   humidityElement.innerHTML = `${humidity}%`;
   windElement.innerHTML = `${wind}m/s`;
   tempSignElement.innerHTML = `°${tempSign}`;
 
-  changeDesign(weatherDescription);
+  changeDesign(currentWeatherDescription, null);
 }
 
 function search(city) {
@@ -176,11 +211,13 @@ function displayForecast(response) {
   let forecastHTML = `<div class="row d-flex justify-content-center no-gutters days">`;
   for (let i = 0; i <= 4; i++) {
     let forecastDay = days[(now.getDay() + i) % 7];
-    let weatherDescription = response.data.daily[i].condition.description;
+    let forecastWeatherDescription =
+      response.data.daily[i].condition.description;
     let degreesDay = Math.round(response.data.daily[i].temperature.maximum);
     let degreesNight = Math.round(response.data.daily[i].temperature.minimum);
     let isFahrenheit = fahrenheitButton.classList.contains("active");
-    changeDesign(weatherDescription);
+    changeDesign(null, forecastWeatherDescription);
+    console.log(forecastWeatherDescription);
 
     forecastHTML += `<div class="col col-mine">
             <div class="card mx-auto card-mine">
