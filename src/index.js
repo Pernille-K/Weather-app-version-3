@@ -54,29 +54,58 @@ function changeDesign(weatherDescription) {
   let sourceMistPicture =
     "https://s3.amazonaws.com/shecodesio-production/uploads/files/000/079/866/original/cloudsadobegray.png?1682952198";
 
-  if (weatherDescription.includes("clear")) {
-    backgroundContainer.style.backgroundColor = "#fff8bc";
-    weatherPicture = sourceClearSkyPicture;
-  } else if (weatherDescription.includes("clouds")) {
-    backgroundContainer.style.backgroundColor = "#ededed";
-    weatherPicture = sourceCloudPicture;
-  } else if (weatherDescription.includes("rain")) {
-    backgroundContainer.style.backgroundColor = "#e0f2fc";
-    weatherPicture = sourceRainPicture;
-  } else if (weatherDescription.includes("thunderstorm")) {
-    backgroundContainer.style.backgroundColor = "#d1fdff";
-    weatherPicture = sourceThunderPicture;
-  } else if (weatherDescription.includes("snow")) {
-    backgroundContainer.style.backgroundColor = "#fffafa";
-    weatherPicture = sourceSnowPicture;
-  } else if (weatherDescription.includes("mist")) {
-    backgroundContainer.style.backgroundColor = "#B4C1C9";
-    weatherPicture = sourceMistPicture;
+  let clear = ["clear sky", "sky is clear"];
+  let clouds = [
+    "scattered clouds",
+    "overcast clouds",
+    "broken clouds",
+    "few clouds",
+  ];
+  let rain = ["shower rain", "rain", "light rain"];
+  let thunderstorm = ["thunderstorm"];
+  let snow = ["snow"];
+  let mist = ["mist", "fog"];
+
+  switch (weatherDescription.toLowerCase()) {
+    case clear[0]:
+    case clear[1]:
+      backgroundContainer.style.backgroundColor = "#fff8bc";
+      weatherPicture = sourceClearSkyPicture;
+      break;
+    case clouds[0]:
+    case clouds[1]:
+    case clouds[2]:
+    case clouds[3]:
+      backgroundContainer.style.backgroundColor = "#ededed";
+      weatherPicture = sourceCloudPicture;
+      break;
+    case rain[0]:
+    case rain[1]:
+    case rain[2]:
+      backgroundContainer.style.backgroundColor = "#e0f2fc";
+      weatherPicture = sourceRainPicture;
+      break;
+    case [thunderstorm]:
+      backgroundContainer.style.backgroundColor = "#d1fdff";
+      weatherPicture = sourceThunderPicture;
+      break;
+    case snow[0]:
+      backgroundContainer.style.backgroundColor = "#fffafa";
+      weatherPicture = sourceSnowPicture;
+      break;
+    case mist[0]:
+    case mist[1]:
+      backgroundContainer.style.backgroundColor = "#B4C1C9";
+      weatherPicture = sourceMistPicture;
+      break;
+    default:
+      break;
   }
   mainPicture.setAttribute("src", weatherPicture);
 }
 
 function displayWeather(response) {
+  console.log(response.data);
   let h1 = document.querySelector("h1");
   let city = document.querySelector(".city");
   let currentDegrees = document.querySelector(".current-degrees");
@@ -84,6 +113,7 @@ function displayWeather(response) {
     "#current-weather-description"
   );
   let weatherDescription = response.data.condition.description;
+  console.log(weatherDescription);
   let humidityElement = document.querySelector("#humidity-stats");
   let windElement = document.querySelector("#wind-stats");
   let humidity = response.data.temperature.humidity;
@@ -144,14 +174,12 @@ function formatSign(isFahrenheit) {
 function displayForecast(response) {
   let forecastElement = document.getElementById("forecast");
   let forecastHTML = `<div class="row d-flex justify-content-center no-gutters days">`;
-
-  for (let i = 1; i <= 5; i++) {
+  for (let i = 0; i <= 4; i++) {
     let forecastDay = days[(now.getDay() + i) % 7];
     let weatherDescription = response.data.daily[i].condition.description;
     let degreesDay = Math.round(response.data.daily[i].temperature.maximum);
     let degreesNight = Math.round(response.data.daily[i].temperature.minimum);
     let isFahrenheit = fahrenheitButton.classList.contains("active");
-
     changeDesign(weatherDescription);
 
     forecastHTML += `<div class="col col-mine">
@@ -204,5 +232,5 @@ fahrenheitButton.addEventListener("click", changeToFahrenheit);
 
 form.addEventListener("submit", handleSubmit);
 currentButton.addEventListener("click", currentLocation);
-search("Sydney");
+search("Oslo");
 formatDate();
