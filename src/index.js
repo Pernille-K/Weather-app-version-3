@@ -39,7 +39,7 @@ function changeToFahrenheit() {
 function changeDesign(currentWeatherDescription, forecastWeatherDescription) {
   let backgroundContainer = document.querySelector("#background-container");
   let mainPicture = document.querySelector("#current-weather-picture");
-  weatherPicture = "#";
+  weatherPicture = "";
 
   let sourceClearSkyPicture =
     "https://s3.amazonaws.com/shecodesio-production/uploads/files/000/079/836/original/sun.png?1682944300";
@@ -62,82 +62,50 @@ function changeDesign(currentWeatherDescription, forecastWeatherDescription) {
     "few clouds",
   ];
   let rain = ["shower rain", "rain", "light rain", "moderate rain"];
-
   let thunderstorm = ["thunderstorm"];
   let snow = ["snow"];
   let mist = ["mist", "fog"];
 
-  if (currentWeatherDescription != null) {
-    switch (currentWeatherDescription.toLowerCase()) {
+  function setWeatherDescription(description) {
+    switch (description) {
       case clear[0]:
       case clear[1]:
         backgroundContainer.style.backgroundColor = "#fff8bc";
-        weatherPicture = sourceClearSkyPicture;
-        break;
+        return sourceClearSkyPicture;
       case clouds[0]:
       case clouds[1]:
       case clouds[2]:
       case clouds[3]:
         backgroundContainer.style.backgroundColor = "#ededed";
-        weatherPicture = sourceCloudPicture;
-        break;
+        return sourceCloudPicture;
       case rain[0]:
       case rain[1]:
       case rain[2]:
       case rain[3]:
         backgroundContainer.style.backgroundColor = "#e0f2fc";
-        weatherPicture = sourceRainPicture;
-        break;
+        return sourceRainPicture;
       case [thunderstorm]:
         backgroundContainer.style.backgroundColor = "#d1fdff";
-        weatherPicture = sourceThunderPicture;
-        break;
+        return sourceThunderPicture;
       case snow[0]:
         backgroundContainer.style.backgroundColor = "#fffafa";
-        weatherPicture = sourceSnowPicture;
-        break;
+        return sourceSnowPicture;
       case mist[0]:
       case mist[1]:
         backgroundContainer.style.backgroundColor = "#B4C1C9";
-        weatherPicture = sourceMistPicture;
-        break;
+        return sourceMistPicture;
       default:
-        break;
+        return "";
     }
-    mainPicture.setAttribute("src", weatherPicture);
   }
 
+  if (currentWeatherDescription != null) {
+    weatherPicture = setWeatherDescription(currentWeatherDescription);
+    mainPicture.setAttribute("src", weatherPicture);
+  }
   if (forecastWeatherDescription != null) {
-    switch (forecastWeatherDescription.toLowerCase()) {
-      case clear[0]:
-      case clear[1]:
-        weatherPicture = sourceClearSkyPicture;
-        break;
-      case clouds[0]:
-      case clouds[1]:
-      case clouds[2]:
-      case clouds[3]:
-        weatherPicture = sourceCloudPicture;
-        break;
-      case rain[0]:
-      case rain[1]:
-      case rain[2]:
-      case rain[3]:
-        weatherPicture = sourceRainPicture;
-        break;
-      case [thunderstorm]:
-        weatherPicture = sourceThunderPicture;
-        break;
-      case snow[0]:
-        weatherPicture = sourceSnowPicture;
-        break;
-      case mist[0]:
-      case mist[1]:
-        weatherPicture = sourceMistPicture;
-        break;
-      default:
-        break;
-    }
+    weatherPicture = setWeatherDescription(forecastWeatherDescription);
+    return weatherPicture;
   }
 }
 
