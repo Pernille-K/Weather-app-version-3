@@ -61,7 +61,13 @@ function changeDesign(currentWeatherDescription, forecastWeatherDescription) {
     "broken clouds",
     "few clouds",
   ];
-  let rain = ["shower rain", "rain", "light rain", "moderate rain"];
+  let rain = [
+    "shower rain",
+    "rain",
+    "light rain",
+    "moderate rain",
+    "heavy intensity rain",
+  ];
   let thunderstorm = ["thunderstorm"];
   let snow = ["snow"];
   let mist = ["mist", "fog"];
@@ -82,6 +88,7 @@ function changeDesign(currentWeatherDescription, forecastWeatherDescription) {
       case rain[1]:
       case rain[2]:
       case rain[3]:
+      case rain[4]:
         backgroundContainer.style.backgroundColor = "#e0f2fc";
         return sourceRainPicture;
       case [thunderstorm]:
