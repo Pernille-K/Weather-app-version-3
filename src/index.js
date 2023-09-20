@@ -41,78 +41,92 @@ function changeDesign(currentWeatherDescription, forecastWeatherDescription) {
   let mainPicture = document.querySelector("#current-weather-picture");
   weatherPicture = "";
 
-  let sourceClearSkyPicture =
-    "https://s3.amazonaws.com/shecodesio-production/uploads/files/000/079/836/original/sun.png?1682944300";
-  let sourceCloudPicture =
-    "https://s3.amazonaws.com/shecodesio-production/uploads/files/000/079/848/original/cloudsadobe2.png?1682946292";
-  let sourceRainPicture =
-    "https://s3.amazonaws.com/shecodesio-production/uploads/files/000/079/764/original/rainy3.png?1682935050";
-  let sourceThunderPicture =
-    "https://s3.amazonaws.com/shecodesio-production/uploads/files/000/079/849/original/thunder.png?1682946763";
-  let sourceSnowPicture =
-    "https://s3.amazonaws.com/shecodesio-production/uploads/files/000/079/893/original/snow2.png?1682960045";
-  let sourceMistPicture =
-    "https://s3.amazonaws.com/shecodesio-production/uploads/files/000/079/866/original/cloudsadobegray.png?1682952198";
-
-  let clear = ["clear sky", "sky is clear"];
-  let clouds = [
-    "scattered clouds",
-    "overcast clouds",
-    "broken clouds",
-    "few clouds",
-  ];
-  let rain = [
-    "shower rain",
-    "rain",
-    "light rain",
-    "moderate rain",
-    "heavy intensity rain",
-  ];
-  let thunderstorm = ["thunderstorm"];
-  let snow = ["snow"];
-  let mist = ["mist", "fog"];
+  let weatherConditions = {
+    clear: {
+      description: ["clear sky", "sky is clear"],
+      color: "#fff8bc",
+      src: "https://s3.amazonaws.com/shecodesio-production/uploads/files/000/079/836/original/sun.png?1682944300",
+    },
+    clouds: {
+      description: [
+        "scattered clouds",
+        "overcast clouds",
+        "broken clouds",
+        "few clouds",
+      ],
+      color: "#ededed",
+      src: "https://s3.amazonaws.com/shecodesio-production/uploads/files/000/079/848/original/cloudsadobe2.png?1682946292",
+    },
+    rain: {
+      description: [
+        "shower rain",
+        "rain",
+        "light rain",
+        "moderate rain",
+        "heavy intensity rain",
+      ],
+      color: "#e0f2fc",
+      src: "https://s3.amazonaws.com/shecodesio-production/uploads/files/000/079/764/original/rainy3.png?1682935050",
+    },
+    thunderstorm: {
+      description: ["thunderstorm"],
+      color: "#d1fdff",
+      src: "https://s3.amazonaws.com/shecodesio-production/uploads/files/000/079/849/original/thunder.png?1682946763",
+    },
+    snow: {
+      description: ["snow"],
+      color: "#fffafa",
+      src: "https://s3.amazonaws.com/shecodesio-production/uploads/files/000/079/893/original/snow2.png?1682960045",
+    },
+    mist: {
+      description: ["mist", "fog"],
+      color: "#B4C1C9",
+      src: "https://s3.amazonaws.com/shecodesio-production/uploads/files/000/079/866/original/cloudsadobegray.png?1682952198",
+    },
+  };
 
   function setWeatherDescription(description) {
-    switch (description) {
-      case clear[0]:
-      case clear[1]:
-        backgroundContainer.style.backgroundColor = "#fff8bc";
-        return sourceClearSkyPicture;
-      case clouds[0]:
-      case clouds[1]:
-      case clouds[2]:
-      case clouds[3]:
-        backgroundContainer.style.backgroundColor = "#ededed";
-        return sourceCloudPicture;
-      case rain[0]:
-      case rain[1]:
-      case rain[2]:
-      case rain[3]:
-      case rain[4]:
-        backgroundContainer.style.backgroundColor = "#e0f2fc";
-        return sourceRainPicture;
-      case [thunderstorm]:
-        backgroundContainer.style.backgroundColor = "#d1fdff";
-        return sourceThunderPicture;
-      case snow[0]:
-        backgroundContainer.style.backgroundColor = "#fffafa";
-        return sourceSnowPicture;
-      case mist[0]:
-      case mist[1]:
-        backgroundContainer.style.backgroundColor = "#B4C1C9";
-        return sourceMistPicture;
-      default:
-        return "";
+    let matchingCondition = null;
+    Object.keys(weatherConditions).forEach((condition) => {
+      let currentCondition = weatherConditions[condition];
+      currentCondition.description.forEach((desc) => {
+        if (description.includes(desc)) {
+          matchingCondition = currentCondition;
+        }
+      });
+    });
+
+    if (matchingCondition) {
+      backgroundContainer.style.backgroundColor = matchingCondition.color;
+      mainPicture.src = matchingCondition.src;
+    } else {
+      backgroundContainer.style.backgroundColor = "";
+      mainPicture.src = "";
+    }
+
+    if (
+      matchingCondition &&
+      currentWeatherDescription != null &&
+      matchingCondition !== "" &&
+      (mainPicture.src === "" || mainPicture.src === null)
+    ) {
+      mainPicture.src = matchingCondition.src;
+    }
+
+    if (
+      matchingCondition &&
+      matchingCondition.src !== "" &&
+      forecastWeatherDescription != null
+    ) {
+      return matchingCondition.src;
     }
   }
 
   if (currentWeatherDescription != null) {
-    weatherPicture = setWeatherDescription(currentWeatherDescription);
-    mainPicture.setAttribute("src", weatherPicture);
+    setWeatherDescription(currentWeatherDescription);
   }
   if (forecastWeatherDescription != null) {
-    weatherPicture = setWeatherDescription(forecastWeatherDescription);
-    return weatherPicture;
+    setWeatherDescription(forecastWeatherDescription);
   }
 }
 
@@ -124,6 +138,8 @@ function displayWeather(response) {
     "#current-weather-description"
   );
   let currentWeatherDescription = response.data.condition.description;
+  console.log(currentWeatherDescription);
+
   let humidityElement = document.querySelector("#humidity-stats");
   let windElement = document.querySelector("#wind-stats");
   let humidity = response.data.temperature.humidity;
@@ -192,7 +208,6 @@ function displayForecast(response) {
     let degreesNight = Math.round(response.data.daily[i].temperature.minimum);
     let isFahrenheit = fahrenheitButton.classList.contains("active");
     changeDesign(null, forecastWeatherDescription);
-    console.log(forecastWeatherDescription);
 
     forecastHTML += `<div class="col col-mine">
             <div class="card mx-auto card-mine">
