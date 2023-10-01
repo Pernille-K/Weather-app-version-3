@@ -37,10 +37,6 @@ function changeToFahrenheit() {
 }
 
 function changeDesign(currentWeatherDescription, forecastWeatherDescription) {
-  let backgroundContainer = document.querySelector("#background-container");
-  let mainPicture = document.querySelector("#current-weather-picture");
-  weatherPicture = "";
-
   let weatherConditions = {
     clear: {
       description: ["clear sky", "sky is clear"],
@@ -85,7 +81,7 @@ function changeDesign(currentWeatherDescription, forecastWeatherDescription) {
     },
   };
 
-  function setWeatherDescription(description) {
+  function findCondition(description) {
     let matchingCondition = null;
     Object.keys(weatherConditions).forEach((condition) => {
       let currentCondition = weatherConditions[condition];
@@ -95,38 +91,38 @@ function changeDesign(currentWeatherDescription, forecastWeatherDescription) {
         }
       });
     });
+    return matchingCondition;
+  }
 
-    if (matchingCondition) {
-      backgroundContainer.style.backgroundColor = matchingCondition.color;
-      mainPicture.src = matchingCondition.src;
+  function renderCurrentUI(condition) {
+    let backgroundContainer = document.querySelector("#background-container");
+    let mainPicture = document.querySelector("#current-weather-picture");
+
+    if (condition) {
+      backgroundContainer.style.backgroundColor = condition.color;
+      mainPicture.src = condition.src;
     } else {
       backgroundContainer.style.backgroundColor = "";
       mainPicture.src = "";
     }
+  }
 
-    if (
-      matchingCondition &&
-      currentWeatherDescription != null &&
-      matchingCondition !== "" &&
-      (mainPicture.src === "" || mainPicture.src === null)
-    ) {
-      mainPicture.src = matchingCondition.src;
-    }
-
-    if (
-      matchingCondition &&
-      matchingCondition.src !== "" &&
-      forecastWeatherDescription != null
-    ) {
-      return matchingCondition.src;
+  function renderForecastUI(condition) {
+    if (condition) {
+      weatherPicture = condition.src;
+      return weatherPicture;
+    } else {
+      return null;
     }
   }
 
   if (currentWeatherDescription != null) {
-    setWeatherDescription(currentWeatherDescription);
+    let matchedCondition = findCondition(currentWeatherDescription);
+    renderCurrentUI(matchedCondition);
   }
   if (forecastWeatherDescription != null) {
-    setWeatherDescription(forecastWeatherDescription);
+    let matchedCondition = findCondition(forecastWeatherDescription);
+    renderForecastUI(matchedCondition);
   }
 }
 
@@ -138,7 +134,6 @@ function displayWeather(response) {
     "#current-weather-description"
   );
   let currentWeatherDescription = response.data.condition.description;
-  console.log(currentWeatherDescription);
 
   let humidityElement = document.querySelector("#humidity-stats");
   let windElement = document.querySelector("#wind-stats");
