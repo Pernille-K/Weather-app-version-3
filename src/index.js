@@ -24,7 +24,6 @@ function changeToCelsius() {
   celsiusButton.classList.add("active");
   fahrenheitButton.classList.remove("active");
   tempSign = "C";
-  units = "metric";
 
   search(cityName);
 }
@@ -33,9 +32,27 @@ function changeToFahrenheit() {
   fahrenheitButton.classList.add("active");
   celsiusButton.classList.remove("active");
   tempSign = "F";
-  units = "imperial";
 
-  search(cityName);
+  let tempSignElement = document.querySelector(".temperature-sign");
+  tempSignElement.innerHTML = `°${tempSign}`;
+
+  let currentCelsiusElement = document.getElementById("current-degrees");
+  let currentDegreesCelsius = currentCelsiusElement.textContent;
+  currentCelsiusElement.innerHTML = Math.round(
+    (currentDegreesCelsius * 9) / 5 + 32
+  );
+
+  let degreesDayCelsiusElements = document.querySelectorAll(".degrees-day");
+  degreesDayCelsiusElements.forEach((degDayCElement) => {
+    let degreesDayCelsius = degDayCElement.textContent;
+    degDayCElement.innerHTML = Math.round((degreesDayCelsius * 9) / 5 + 32);
+  });
+
+  let degreesNightCelsiusElements = document.querySelectorAll(".degrees-night");
+  degreesNightCelsiusElements.forEach((degNightCElement) => {
+    let degreesNightCelsius = degNightCElement.textContent;
+    degNightCElement.innerHTML = Math.round((degreesNightCelsius * 9) / 5 + 32);
+  });
 }
 
 function changeDesign(currentWeatherDescription, forecastWeatherDescription) {
@@ -212,8 +229,8 @@ function displayForecast(response) {
                 <h3 class="day">${forecastDay}</h3>
                 <img class="day-picture small-picture" src="${weatherPicture}" alt="" />
                 <p class="card-text">
-                  <span class="degrees-day">${degreesDay}&deg / </span>
-                    <span class="degrees-night"> ${degreesNight}&deg</span>
+                  <span class="degrees-day">${degreesDay}</span>&deg / 
+                    <span class="degrees-night"> ${degreesNight}</span>&deg
                 </p>
               </div>
             </div>

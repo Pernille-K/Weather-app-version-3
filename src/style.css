@@ -107,10 +107,14 @@ a:hover {
   font-weight: 700;
 } */
 
+.deg-sign-class {
+  text-align: center;
+}
+
 #current-degrees,
 .deg-sign-class > .temperature-sign {
   font-weight: 800;
-  font-size: 1.8em;
+  font-size: 2em;
 }
 
 #current-weather-picture {
