@@ -35,6 +35,10 @@ a {
   color: black;
 }
 
+a:hover {
+  font-weight: bold;
+}
+
 .search-and-current-buttons {
   word-spacing: 1.5em;
 }
