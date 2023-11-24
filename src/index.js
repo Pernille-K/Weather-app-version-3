@@ -15,7 +15,9 @@ function formatDate() {
 
   currentTime.innerHTML = `${hours}:${minutes}`;
   dayElement.innerHTML = `${currentDay}`;
-  currentDate.innerHTML = `${now.getDate()}. ${now.getMonth() + 1}`;
+  currentDate.innerHTML = `${now.getDate()}/${
+    now.getMonth() + 1
+  } ${now.getFullYear()}`;
 }
 
 function changeToCelsius() {
@@ -40,44 +42,43 @@ function changeDesign(currentWeatherDescription, forecastWeatherDescription) {
   let weatherConditions = {
     clear: {
       description: ["clear sky", "sky is clear"],
-      color: "#fff8bc",
-      src: "https://s3.amazonaws.com/shecodesio-production/uploads/files/000/079/836/original/sun.png?1682944300",
+      color: "#c7e8f9",
+      iconSrc: "./img/sun.png",
     },
     clouds: {
-      description: [
-        "scattered clouds",
-        "overcast clouds",
-        "broken clouds",
-        "few clouds",
-      ],
+      description: ["overcast clouds", "broken clouds"],
       color: "#ededed",
-      src: "https://s3.amazonaws.com/shecodesio-production/uploads/files/000/079/848/original/cloudsadobe2.png?1682946292",
+      iconSrc: "./img/cloud.png",
     },
-    rain: {
-      description: [
-        "shower rain",
-        "rain",
-        "light rain",
-        "moderate rain",
-        "heavy intensity rain",
-      ],
+    sunclouds: {
+      description: ["scattered clouds", "few clouds"],
+      color: "#585585",
+      iconSrc: "./img/partlycloudy.png",
+    },
+    lightrain: {
+      description: ["shower rain", "rain", "light rain"],
       color: "#e0f2fc",
-      src: "https://s3.amazonaws.com/shecodesio-production/uploads/files/000/079/764/original/rainy3.png?1682935050",
+      iconSrc: "./img/rain.png",
+    },
+    heavyrain: {
+      description: ["moderate rain", "heavy intensity rain"],
+      color: "#e0f2fc",
+      iconSrc: "./img/rain.png",
     },
     thunderstorm: {
       description: ["thunderstorm"],
       color: "#d1fdff",
-      src: "https://s3.amazonaws.com/shecodesio-production/uploads/files/000/079/849/original/thunder.png?1682946763",
+      iconSrc: "./img/lightning.png",
     },
     snow: {
       description: ["snow"],
       color: "#fffafa",
-      src: "https://s3.amazonaws.com/shecodesio-production/uploads/files/000/079/893/original/snow2.png?1682960045",
+      iconSrc: "./img/snow.png",
     },
     mist: {
       description: ["mist", "fog"],
       color: "#B4C1C9",
-      src: "https://s3.amazonaws.com/shecodesio-production/uploads/files/000/079/866/original/cloudsadobegray.png?1682952198",
+      iconSrc: "./img/fog.png",
     },
   };
 
@@ -87,7 +88,7 @@ function changeDesign(currentWeatherDescription, forecastWeatherDescription) {
       let currentCondition = weatherConditions[condition];
       currentCondition.description.forEach((desc) => {
         if (description.includes(desc)) {
-          matchingCondition = currentCondition;
+          matchingCondition = Object.assign({ condition }, currentCondition);
         }
       });
     });
@@ -96,11 +97,14 @@ function changeDesign(currentWeatherDescription, forecastWeatherDescription) {
 
   function renderCurrentUI(condition) {
     let backgroundContainer = document.querySelector("#background-container");
+    let backgroundContainerClasses = backgroundContainer.classList;
     let mainPicture = document.querySelector("#current-weather-picture");
+    backgroundContainerClasses.remove(backgroundContainerClasses[1]);
+    backgroundContainerClasses.add(condition.condition);
 
     if (condition) {
-      backgroundContainer.style.backgroundColor = condition.color;
-      mainPicture.src = condition.src;
+      backgroundContainer.classList.add(condition.condition);
+      mainPicture.src = condition.iconSrc;
     } else {
       backgroundContainer.style.backgroundColor = "";
       mainPicture.src = "";
@@ -109,7 +113,7 @@ function changeDesign(currentWeatherDescription, forecastWeatherDescription) {
 
   function renderForecastUI(condition) {
     if (condition) {
-      weatherPicture = condition.src;
+      weatherPicture = condition.iconSrc;
       return weatherPicture;
     } else {
       return null;
@@ -120,6 +124,7 @@ function changeDesign(currentWeatherDescription, forecastWeatherDescription) {
     let matchedCondition = findCondition(currentWeatherDescription);
     renderCurrentUI(matchedCondition);
   }
+
   if (forecastWeatherDescription != null) {
     let matchedCondition = findCondition(forecastWeatherDescription);
     renderForecastUI(matchedCondition);
@@ -128,27 +133,24 @@ function changeDesign(currentWeatherDescription, forecastWeatherDescription) {
 
 function displayWeather(response) {
   let h1 = document.querySelector("h1");
-  let city = document.querySelector(".city");
-  let currentDegrees = document.querySelector(".current-degrees");
+  let city = document.querySelector("#city");
+  let country = document.querySelector("#country");
+  let currentDegrees = document.querySelector("#current-degrees");
   let weatherDescriptionElement = document.querySelector(
     "#current-weather-description"
   );
   let currentWeatherDescription = response.data.condition.description;
 
-  let humidityElement = document.querySelector("#humidity-stats");
-  let windElement = document.querySelector("#wind-stats");
-  let humidity = response.data.temperature.humidity;
-  let wind = Math.round(response.data.wind.speed);
   let tempSignElement = document.querySelector(".temperature-sign");
 
   cityName = response.data.city;
 
   h1.innerHTML = `${response.data.city}`;
-  city.innerHTML = `${response.data.city}`;
+  city.innerHTML = `${response.data.city},`;
+  country.innerHTML = `${response.data.country}`;
   currentDegrees.innerHTML = `${Math.round(response.data.temperature.current)}`;
   weatherDescriptionElement.innerHTML = `${currentWeatherDescription}`;
-  humidityElement.innerHTML = `${humidity}%`;
-  windElement.innerHTML = `${wind}m/s`;
+
   tempSignElement.innerHTML = `°${tempSign}`;
 
   changeDesign(currentWeatherDescription, null);
@@ -182,6 +184,7 @@ function handleSubmit(event) {
   event.preventDefault();
   let input = document.querySelector("#search-input");
   search(input.value);
+  input.value = "";
 }
 
 function formatSign(isFahrenheit) {
@@ -194,34 +197,23 @@ function formatSign(isFahrenheit) {
 
 function displayForecast(response) {
   let forecastElement = document.getElementById("forecast");
-  let forecastHTML = `<div class="row d-flex justify-content-center no-gutters days">`;
+  let forecastHTML = `<div class="d-flex days justify-content-between">`;
   for (let i = 0; i <= 4; i++) {
     let forecastDay = days[(now.getDay() + i) % 7];
     let forecastWeatherDescription =
       response.data.daily[i].condition.description;
     let degreesDay = Math.round(response.data.daily[i].temperature.maximum);
     let degreesNight = Math.round(response.data.daily[i].temperature.minimum);
-    let isFahrenheit = fahrenheitButton.classList.contains("active");
     changeDesign(null, forecastWeatherDescription);
 
     forecastHTML += `<div class="col col-mine">
             <div class="card mx-auto card-mine">
               <div class="card-body">
-                <h3 id="day">${forecastDay}</h3>
+                <h3 class="day">${forecastDay}</h3>
                 <img class="day-picture small-picture" src="${weatherPicture}" alt="" />
                 <p class="card-text">
-                  <span class="degrees-day">${degreesDay}</span><span
-                    class="temperature-sign"
-                  >${formatSign(isFahrenheit)}
-                    </span
-                  ><br/>
-                  <em class="col-color"
-                    ><span class="degrees-night">${degreesNight}</span><span
-                      class="temperature-sign"
-                    >${formatSign(isFahrenheit)}
-                      </span
-                    ></em
-                  >
+                  <span class="degrees-day">${degreesDay}&deg </span>
+                    <span class="degrees-night"> <i>${degreesNight}&deg</i></span>
                 </p>
               </div>
             </div>
@@ -239,6 +231,7 @@ function getForecast(city) {
 }
 
 let days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
 let now = new Date();
 let cityName = null;
 let units = "metric";
@@ -254,5 +247,5 @@ fahrenheitButton.addEventListener("click", changeToFahrenheit);
 
 form.addEventListener("submit", handleSubmit);
 currentButton.addEventListener("click", currentLocation);
-search("Oslo");
+search("Trondheim");
 formatDate();

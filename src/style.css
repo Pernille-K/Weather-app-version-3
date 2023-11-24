@@ -1,133 +1,187 @@
+* {
+  color: black;
+  font-weight: 500;
+}
+
 body {
-  font-family: "Ysabeau", sans-serif;
-  background-image: url("");
+  font-family: "Quicksand", sans-serif;
+  background-color: #ceeafc;
 }
 
 h1 {
-  text-transform: uppercase;
-  font-weight: 600;
-  font-size: 45px;
-}
-
-h2 {
-  font-size: 15px;
-  text-align: center;
-  font-weight: normal;
-  display: block;
-  margin: 0 auto;
-  font-style: capitalize;
-}
-
-h3 {
-  font-size: 15px;
+  font-weight: 700;
+  font-size: 2em;
+  display: inline;
 }
 
 button {
   border: none;
   background: none;
+  font-size: 1.4rem;
 }
 
 li {
   list-style: none;
 }
 
-.container-mine {
-  padding-top: 20px;
-  padding-bottom: 20px;
-  display: block;
-  margin: 0 auto;
-  max-width: 620px;
-  margin-top: 10px;
-  border-radius: 10px;
-  border: 1px solid #d1d1d1;
+footer {
+  font-size: 1em;
+  text-align: center;
+  margin-top: 0.5em;
 }
 
-#background-container {
-  background-color: #e0f2fc;
+a {
+  text-decoration: none;
+  color: black;
 }
 
-.search-button {
-  display: block;
-  margin: 0 auto;
-  font-size: 18px;
-}
-
-.current-button {
-  display: block;
-  margin: 0 auto;
-  font-size: 18px;
+.search-and-current-buttons {
+  word-spacing: 1.5em;
 }
 
 .degrees-buttons {
-  font-size: 18px;
+  text-align: right;
+}
+
+/* .container {
+  max-width: 100%;
+  max-height: 100%;
+} */
+
+#background-container {
+  display: block;
+  max-width: 740px;
+  max-height: 470px;
+  padding: 1.5%;
+  margin: 0 auto;
+  margin-top: 3%;
+  border-radius: 8px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+
+.form-control {
+  padding: 0.3em;
+  max-width: 100%;
+  border-radius: 8px;
+  background-color: #ffffff;
+}
+
+.form-control:focus {
+  border-color: white;
+  box-shadow: none;
 }
 
 .active {
-  font-weight: 600;
+  font-weight: 700;
 }
 
-.small-picture {
-  object-fit: content;
-  width: auto;
-  max-height: 50px;
+.current {
+  margin: 7% 0;
+}
+
+#city {
+  font-weight: 800;
+  margin-bottom: 0;
+}
+
+#country {
+  font-weight: 500;
+}
+
+.date-and-time {
+  font-size: 1.3em;
+}
+
+.desc-and-temp {
+  text-align: center;
+  word-spacing: 0;
+  margin-top: 1em;
+}
+
+#current-weather-description {
+  display: inline;
+  font-size: 1.1em;
+}
+
+#current-degrees,
+.col-3 > .temperature-sign {
+  font-weight: bold;
+  font-size: 1.3em;
+}
+
+#current-weather-picture {
   display: block;
   margin: 0 auto;
+  width: 6em;
 }
 
-.clear-sky {
-  border-radius: 50%;
-  opacity: 75%;
-}
-
-.current-degrees-and-sign {
-  display: block;
-  margin: 0 auto;
-  text-align: center;
-  font-size: 25px;
-  font-weight: 600;
-}
-
-.weather-details-today {
-  font-size: 15px;
-  text-align: center;
+.day {
+  font-size: 1.2em;
+  font-weight: bold;
 }
 
 .col-mine {
   text-align: center;
-  font-size: 18px;
 }
 
-.col-color {
-  color: #a9a9a9;
+.col-mine:first-child {
+  padding-left: 0;
 }
 
-.days {
-  padding-top: 32px;
-}
-
-.title {
-  padding-top: 20px;
-}
-
-.title img {
-  display: block;
-  margin: 0 auto;
-  margin-top: -27px;
-  width: auto;
-  max-height: 90px;
+.col-mine:last-child {
+  padding-right: 0;
 }
 
 .card-mine {
   background: transparent;
-  border: 1px solid #d1d1d1;
+  border: none;
+}
+
+.card-body {
+  padding: 0;
 }
 
 .card-text {
-  padding-top: 10px;
+  padding-top: 0.5em;
+  font-size: 1.2em;
 }
 
-.source-code-link {
-  font-size: 15px;
-  padding: 10px;
-  text-align: center;
+.small-picture {
+  object-fit: content;
+  max-width: 3em;
+  display: block;
+  margin: 0 auto;
+}
+
+.degrees-day,
+.degrees-night {
+  font-weight: bold;
+}
+
+.clear {
+  background-image: url("https://s3.amazonaws.com/shecodesio-production/uploads/files/000/104/829/original/1.png?1700776642");
+}
+
+.clouds {
+  background-image: url("https://s3.amazonaws.com/shecodesio-production/uploads/files/000/104/836/original/8.png?1700776772");
+}
+
+.sunclouds {
+  background-image: url("https://s3.amazonaws.com/shecodesio-production/uploads/files/000/104/833/original/5.png?1700776720");
+}
+
+.lightrain {
+  background-image: url("https://s3.amazonaws.com/shecodesio-production/uploads/files/000/104/835/original/7.png?1700776761");
+}
+.heavyrain {
+  background-image: url("https://s3.amazonaws.com/shecodesio-production/uploads/files/000/104/837/original/9.png?1700776783");
+}
+.thunderstorm {
+  background-image: url("https://s3.amazonaws.com/shecodesio-production/uploads/files/000/104/838/original/10.png?1700776794");
+}
+.snow {
+  background-image: url("https://s3.amazonaws.com/shecodesio-production/uploads/files/000/104/834/original/6.png?1700776743");
+}
+.mist {
+  background-image: url("https://s3.amazonaws.com/shecodesio-production/uploads/files/000/104/832/original/4.png?1700776677");
 }
