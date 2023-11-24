@@ -136,9 +136,9 @@ function displayWeather(response) {
   let city = document.querySelector("#city");
   let country = document.querySelector("#country");
   let currentDegrees = document.querySelector("#current-degrees");
-  let weatherDescriptionElement = document.querySelector(
-    "#current-weather-description"
-  );
+  // let weatherDescriptionElement = document.querySelector(
+  //   "#current-weather-description"
+  // );
   let currentWeatherDescription = response.data.condition.description;
 
   let tempSignElement = document.querySelector(".temperature-sign");
@@ -146,10 +146,10 @@ function displayWeather(response) {
   cityName = response.data.city;
 
   h1.innerHTML = `${response.data.city}`;
-  city.innerHTML = `${response.data.city},`;
-  country.innerHTML = `${response.data.country}`;
+  city.innerHTML = `${response.data.city}, `;
+  country.innerHTML = ` ${response.data.country}`;
   currentDegrees.innerHTML = `${Math.round(response.data.temperature.current)}`;
-  weatherDescriptionElement.innerHTML = `${currentWeatherDescription}`;
+  // weatherDescriptionElement.innerHTML = `${currentWeatherDescription}`;
 
   tempSignElement.innerHTML = `°${tempSign}`;
 
@@ -240,12 +240,14 @@ let celsiusButton = document.querySelector(".celsius-button");
 let fahrenheitButton = document.querySelector(".fahrenheit-button");
 let form = document.querySelector(".search-bar");
 let currentButton = document.querySelector(".current-button");
+let searchButton = document.querySelector(".search-button");
 
 celsiusButton.classList.add("active");
 celsiusButton.addEventListener("click", changeToCelsius);
 fahrenheitButton.addEventListener("click", changeToFahrenheit);
 
 form.addEventListener("submit", handleSubmit);
+searchButton.addEventListener("click", handleSubmit);
 currentButton.addEventListener("click", currentLocation);
 search("Trondheim");
 formatDate();

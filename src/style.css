@@ -1,15 +1,10 @@
-* {
-  color: black;
-  font-weight: 500;
-}
-
 body {
-  font-family: "Quicksand", sans-serif;
+  font-family: "Exo 2", sans-serif;
   background-color: #ceeafc;
 }
 
 h1 {
-  font-weight: 700;
+  font-weight: 900;
   font-size: 2em;
   display: inline;
 }
@@ -25,14 +20,21 @@ li {
 }
 
 footer {
+  position: fixed;
+  bottom: 5%;
+  left: 40%;
   font-size: 1em;
   text-align: center;
   margin-top: 0.5em;
+  text-shadow: 1px 2px 5px #88ccf959;
+  font-weight: 500;
+  color: black;
 }
 
 a {
   text-decoration: none;
   color: black;
+  text-shadow: 1px 2px 5px #88ccf959;
 }
 
 a:hover {
@@ -47,11 +49,6 @@ a:hover {
   text-align: right;
 }
 
-/* .container {
-  max-width: 100%;
-  max-height: 100%;
-} */
-
 #background-container {
   display: block;
   max-width: 740px;
@@ -61,6 +58,8 @@ a:hover {
   margin-top: 3%;
   border-radius: 8px;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  text-shadow: 1px 2px 5px #7b95a6;
+  font-weight: 600;
 }
 
 .form-control {
@@ -76,7 +75,7 @@ a:hover {
 }
 
 .active {
-  font-weight: 700;
+  font-weight: 900;
 }
 
 .current {
@@ -84,7 +83,7 @@ a:hover {
 }
 
 #city {
-  font-weight: 800;
+  font-weight: 900;
   margin-bottom: 0;
 }
 
@@ -94,34 +93,35 @@ a:hover {
 
 .date-and-time {
   font-size: 1.3em;
+  margin-top: 2.8%;
 }
 
 .desc-and-temp {
-  text-align: center;
-  word-spacing: 0;
   margin-top: 1em;
 }
 
-#current-weather-description {
+/* #current-weather-description {
   display: inline;
-  font-size: 1.1em;
-}
+  font-size: 1.3em;
+  text-align: left;
+  font-weight: 700;
+} */
 
 #current-degrees,
-.col-3 > .temperature-sign {
-  font-weight: bold;
-  font-size: 1.4em;
+.deg-sign-class > .temperature-sign {
+  font-weight: 800;
+  font-size: 1.8em;
 }
 
 #current-weather-picture {
   display: block;
   margin: 0 auto;
-  width: 6em;
+  width: 5em;
 }
 
 .day {
   font-size: 1.2em;
-  font-weight: bold;
+  font-weight: 900;
 }
 
 .col-mine {
@@ -139,6 +139,7 @@ a:hover {
 .card-mine {
   background: transparent;
   border: none;
+  margin-bottom: 10%;
 }
 
 .card-body {
@@ -155,11 +156,12 @@ a:hover {
   max-width: 3em;
   display: block;
   margin: 0 auto;
+  filter: drop-shadow(2px 2px 5px #7d8f9b);
 }
 
 .degrees-day,
 .degrees-night {
-  font-weight: bold;
+  font-weight: 900;
 }
 
 .clear {
@@ -177,6 +179,7 @@ a:hover {
 .lightrain {
   background-image: url("https://s3.amazonaws.com/shecodesio-production/uploads/files/000/104/835/original/7.png?1700776761");
 }
+
 .heavyrain {
   background-image: url("https://s3.amazonaws.com/shecodesio-production/uploads/files/000/104/837/original/9.png?1700776783");
 }
