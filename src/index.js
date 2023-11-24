@@ -73,7 +73,7 @@ function changeDesign(currentWeatherDescription, forecastWeatherDescription) {
       iconSrc: "./img/partlycloudy.png",
     },
     lightrain: {
-      description: ["shower rain", "rain", "light rain"],
+      description: ["shower rain", "rain", "light rain", "drizzle"],
       color: "#e0f2fc",
       iconSrc: "./img/rain.png",
     },
@@ -157,6 +157,7 @@ function displayWeather(response) {
   //   "#current-weather-description"
   // );
   let currentWeatherDescription = response.data.condition.description;
+  console.log(currentWeatherDescription);
 
   let tempSignElement = document.querySelector(".temperature-sign");
 
