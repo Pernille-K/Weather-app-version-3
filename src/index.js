@@ -212,8 +212,8 @@ function displayForecast(response) {
                 <h3 class="day">${forecastDay}</h3>
                 <img class="day-picture small-picture" src="${weatherPicture}" alt="" />
                 <p class="card-text">
-                  <span class="degrees-day">${degreesDay}&deg </span>
-                    <span class="degrees-night"> <i>${degreesNight}&deg</i></span>
+                  <span class="degrees-day">${degreesDay}&deg / </span>
+                    <span class="degrees-night"> ${degreesNight}&deg</span>
                 </p>
               </div>
             </div>
